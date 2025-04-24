@@ -1,12 +1,12 @@
-from flask import Flask, request, jsonify, render_template, CORS
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 from tensorflow.keras.models import load_model
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import os
 
-CORS(app)
-
 app = Flask(__name__)
+CORS(app)
 
 # Load deep learning models
 try:
@@ -89,5 +89,6 @@ def predict():
         return jsonify({'error': 'Internal server error: ' + str(e)}), 500
 
 if __name__ == '__main__':
-    print("🚀 Starting Flask app...")
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    print(f"🚀 Starting Flask app on port {port}...")
+    app.run(debug=False, host='0.0.0.0', port=port)
